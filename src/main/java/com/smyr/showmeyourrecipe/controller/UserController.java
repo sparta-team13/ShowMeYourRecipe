@@ -3,22 +3,21 @@ package com.smyr.showmeyourrecipe.controller;
 import com.smyr.showmeyourrecipe.dto.UserRequestDto;
 import com.smyr.showmeyourrecipe.dto.UserResponseDto;
 import com.smyr.showmeyourrecipe.jwt.JwtUtil;
+import com.smyr.showmeyourrecipe.security.UserDetailsImpl;
 import com.smyr.showmeyourrecipe.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping( "/api" )
 public class UserController {
 	private final UserService userService;
 	private final JwtUtil jwtUtil;
-
-	@Autowired
-	public UserController( UserService userService, JwtUtil jwtUtil ) {
-		this.userService = userService;
-		this.jwtUtil = jwtUtil;
-	}
 
 	@PostMapping( "/auth/signup" )
 	public ResponseEntity< String > signup( UserRequestDto userRequestDto ) {
@@ -35,9 +34,9 @@ public class UserController {
 	}
 
 	@PatchMapping( "/user" )
-	public ResponseEntity< String > updateProfile( UserRequestDto userRequestDto, @CookieValue( JwtUtil.AUTHORIZATION_HEADER ) String tokenValue ) {
+	public ResponseEntity< String > updateProfile( @AuthenticationPrincipal UserDetailsImpl userDetailsImpl, UserRequestDto userRequestDto ) {
 
-		var userId = jwtUtil.getUserId( tokenValue );
+		var userId = userDetailsImpl.getUser().getId();
 
 		userService.updateUser( userId, userRequestDto );
 

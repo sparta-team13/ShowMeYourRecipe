@@ -122,9 +122,4 @@ public class JwtUtil {
 		}
 		return null;
 	}
-
-	public long getUserId( String token ) {
-		Object id = getUserInfoFromToken( substringToken( token ) ).get( CLAIM_USER_ID );
-		return Long.parseLong( String.valueOf( id ) );
-	}
 }
