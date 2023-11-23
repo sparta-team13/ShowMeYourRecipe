@@ -2,17 +2,14 @@ package com.smyr.showmeyourrecipe.entity.post;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Embeddable
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostLikeId implements Serializable {
+public class PostLikePK implements Serializable {
 
     @Column(name = "user_id")
     private Long userId;
@@ -21,7 +18,7 @@ public class PostLikeId implements Serializable {
     private Long postId;
 
     @Builder
-    public PostLikeId(Long userId, Long postId) {
+    public PostLikePK(Long userId, Long postId) {
         this.userId = userId;
         this.postId = postId;
     }

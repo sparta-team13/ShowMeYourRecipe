@@ -1,6 +1,7 @@
 package com.smyr.showmeyourrecipe.entity;
 
 import com.smyr.showmeyourrecipe.dto.CommentRequestDto;
+import com.smyr.showmeyourrecipe.entity.post.Post;
 import jakarta.persistence.*;
 import lombok.*;
 

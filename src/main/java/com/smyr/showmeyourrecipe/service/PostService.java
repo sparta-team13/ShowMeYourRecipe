@@ -1,17 +1,16 @@
 package com.smyr.showmeyourrecipe.service;
 
 import com.smyr.showmeyourrecipe.dto.post.PostRequest;
+import com.smyr.showmeyourrecipe.dto.post.PostResponse;
 import com.smyr.showmeyourrecipe.entity.post.Post;
 import com.smyr.showmeyourrecipe.entity.User;
 import com.smyr.showmeyourrecipe.entity.post.PostLike;
-import com.smyr.showmeyourrecipe.entity.post.PostLikeId;
 import com.smyr.showmeyourrecipe.repository.post.PostLikeRepository;
 import com.smyr.showmeyourrecipe.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -47,29 +46,33 @@ public class PostService {
         postRepository.delete(post);
     }
 
-
+    public PostResponse readPost(Long userId, Long postId) {
+        return PostResponse.builder()
+                    .postId(postId)
+                    .queryResponse(postLikeRepository.readPost(userId, postId).get(0))
+                    .build();
+    }
 
     /**
      *  Service for postLike
      * */
     @Transactional
-    public PostLike createPostLike(Long userId, Long postId) {
-        return postLikeRepository.save(new PostLike(
-                PostLikeId.builder()
-                        .userId(userId)
-                        .postId(postId)
-                        .build()
-        ));
+    public PostLike createPostLike(User user, Long postId) {
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(NoSuchElementException::new);
+
+        return postLikeRepository.save(
+                PostLike.builder()
+                    .user(user)
+                    .post(findPost)
+                    .build()
+        );
     }
 
     @Transactional
-    public void deletePostLike (Long userId, Long postId) {
-        PostLike postLike = postLikeRepository.findById(
-                PostLikeId.builder()
-                        .userId(userId)
-                        .postId(postId)
-                        .build()
-        ).orElseThrow(NoSuchElementException::new);
-        postLikeRepository.delete(postLike);
+    public void deletePostLike (User user, Long postId) {
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(NoSuchElementException::new);
+        postLikeRepository.deletePostLikeByUserAndPost(user, findPost);
     }
 }
