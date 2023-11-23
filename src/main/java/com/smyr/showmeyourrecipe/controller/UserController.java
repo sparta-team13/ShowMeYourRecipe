@@ -25,7 +25,7 @@ public class UserController {
 		return ResponseEntity.ok( "signup success" );
 	}
 
-	@GetMapping( "/user/{userId}" )
+	@GetMapping( "/users/{userId}" )
 	public ResponseEntity< UserResponseDto > getUser( @PathVariable long userId ) {
 		var userResponseDto = this.userService.getUser( userId );
 

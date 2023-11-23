@@ -1,9 +1,10 @@
 package com.smyr.showmeyourrecipe.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Getter

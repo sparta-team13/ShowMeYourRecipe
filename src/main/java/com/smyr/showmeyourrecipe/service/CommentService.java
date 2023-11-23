@@ -7,8 +7,6 @@ import com.smyr.showmeyourrecipe.entity.Post;
 import com.smyr.showmeyourrecipe.entity.User;
 import com.smyr.showmeyourrecipe.repository.CommentRepository;
 import com.smyr.showmeyourrecipe.repository.PostRepository;
-import com.smyr.showmeyourrecipe.repository.UserRepository;
-import com.smyr.showmeyourrecipe.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,12 +1,10 @@
 package com.smyr.showmeyourrecipe.dto;
 
 import com.smyr.showmeyourrecipe.entity.Comment;
-import com.smyr.showmeyourrecipe.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor
@@ -32,19 +30,3 @@ public class CommentResponseDto {
         this.lastModifiedDate = comment.getLastModifiedDate();
     }
 }
-
-//[
-//        {
-//    “commentId”:long,
-//    “parentCommentId”:long,
-//    “postId”:long,
-//    “depth”:int,
-//    “writerId”:userId,
-//    “writer”:userName,
-//    “content”:string,
-//    “likeUsers”: [
-//            { userId:int, userName:string },
-//    ],
-//    “lastModifiedDate”:”YYYY-MM-DD hh:mm:ss”
-//        },
-//]

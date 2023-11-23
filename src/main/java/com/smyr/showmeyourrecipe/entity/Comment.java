@@ -2,11 +2,12 @@ package com.smyr.showmeyourrecipe.entity;
 
 import com.smyr.showmeyourrecipe.dto.CommentRequestDto;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -47,6 +48,7 @@ public class Comment{
         this.writerName = user.getUsername();
         this.content = requestDto.getContent();
         this.post = post;
+        this.lastModifiedDate = LocalDateTime.now();
     }
 
     public void update(CommentRequestDto requestDto) {

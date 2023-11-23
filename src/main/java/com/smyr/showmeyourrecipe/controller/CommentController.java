@@ -3,18 +3,14 @@ package com.smyr.showmeyourrecipe.controller;
 
 import com.smyr.showmeyourrecipe.dto.CommentRequestDto;
 import com.smyr.showmeyourrecipe.dto.CommentResponseDto;
-import com.smyr.showmeyourrecipe.entity.CommentLike;
-import com.smyr.showmeyourrecipe.entity.CommentLikeKey;
 import com.smyr.showmeyourrecipe.repository.CommentLikeRepository;
 import com.smyr.showmeyourrecipe.security.UserDetailsImpl;
 import com.smyr.showmeyourrecipe.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
