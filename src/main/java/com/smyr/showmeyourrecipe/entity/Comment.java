@@ -5,42 +5,47 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode
 @Table(name = "comment")
 public class Comment{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentid;
+    private Long commentId;
 
     @Column(nullable = false)
-    private String username;
+    private Long writerId;
+
+    @Column(nullable = false)
+    private String writerName;
 
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private LocalDateTime lastModifiedDate;
+
     @Column(nullable = true)
-    private Long parentcommentid;
+    private Long parentCommentId;
 
     @Column(nullable = true)
     private Long depth;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postid", nullable = false)
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @Column(nullable = true)
-    private Boolean commentLike;
 
-
-    public Comment(CommentRequestDto requestDto, Post post) {
-        this.username = requestDto.getUsername();
+    @Builder
+    public Comment(User user, CommentRequestDto requestDto, Post post) {
+        this.writerId = user.getId();
+        this.writerName = user.getUsername();
         this.content = requestDto.getContent();
-        //this.like = like;
         this.post = post;
     }
 
@@ -51,14 +56,4 @@ public class Comment{
     public void delete() {
         this.content = "삭제된 댓글입니다.";
     }
-
-    public void like() {
-        this.commentLike = true;
-    }
-
-    public void dislike() {
-        this.commentLike = false;
-    }
-
-
 }

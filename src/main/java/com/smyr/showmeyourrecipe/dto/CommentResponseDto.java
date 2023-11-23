@@ -1,9 +1,11 @@
 package com.smyr.showmeyourrecipe.dto;
 
 import com.smyr.showmeyourrecipe.entity.Comment;
+import com.smyr.showmeyourrecipe.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -12,24 +14,23 @@ public class CommentResponseDto {
     private Long commentId;
     private Long parentCommentId;
     private Long postId;
-    private int depth;
+    private Long depth;
     private Long writerId;
     private String writer;
     private String content;
-    private Date lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
 
-    public CommentResponseDto(Comment comment) {
-        this.commentId = comment.getCommentid();
+    public CommentResponseDto( Comment comment ) {
+        this.commentId = comment.getCommentId();
         this.content = comment.getContent();
-////        this.parentCommentId = comment.getParentcommentid();
-////        this.postId = comment.getPostId();
-////        this.depth = comment.getDepth();
-////        this.writerId = comment.getWriterId();
-////        this.writer = comment.getWriter();
-////        this.lastModifiedDate = comment.getLastModifiedDate();
+        this.parentCommentId = comment.getParentCommentId();
+        this.postId = comment.getPost().getId();
+        this.depth = comment.getDepth();
+        this.writerId = comment.getWriterId();
+        this.writer = comment.getWriterName();
+        this.lastModifiedDate = comment.getLastModifiedDate();
     }
-
 }
 
 //[
