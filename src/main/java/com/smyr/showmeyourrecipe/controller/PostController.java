@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
     private final PostService postService;
 
-    @PostMapping("/a")
+    @PostMapping("")
     public void createPost(@AuthenticationPrincipal UserDetailsImpl userDetails,
                            @RequestBody PostRequest request) {
-        postService.createPost(userDetails.getUser(), request);
+//        postService.createPost(userDetails.getUser(), request);
     }
 
     @PatchMapping("/{postId}")

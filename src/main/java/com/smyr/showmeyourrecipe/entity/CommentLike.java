@@ -1,25 +1,21 @@
 package com.smyr.showmeyourrecipe.entity;
 
+import com.smyr.showmeyourrecipe.dto.CommentRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-@Data
-@Entity
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@IdClass(CommentLikeKey.class)
-@Table(name = "commentLike")
-public class CommentLike{
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userid")
-    private User user;
+import lombok.*;
 
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "commentid")
-    private Comment comment;
+import java.time.LocalDateTime;
+
+//@Data
+@Getter
+@Entity
+@NoArgsConstructor
+public class CommentLike{
+
+    @EmbeddedId
+    private CommentLikeKey id;
+
+    public CommentLike(CommentLikeKey id) {
+        this.id = id;
+    }
 }
