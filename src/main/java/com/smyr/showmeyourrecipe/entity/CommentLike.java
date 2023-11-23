@@ -1,10 +1,9 @@
 package com.smyr.showmeyourrecipe.entity;
 
-import com.smyr.showmeyourrecipe.dto.CommentRequestDto;
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.time.LocalDateTime;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 //@Data
 @Getter

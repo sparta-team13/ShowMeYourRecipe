@@ -3,7 +3,6 @@ package com.smyr.showmeyourrecipe.controller;
 
 import com.smyr.showmeyourrecipe.dto.CommentRequestDto;
 import com.smyr.showmeyourrecipe.dto.CommentResponseDto;
-import com.smyr.showmeyourrecipe.repository.CommentLikeRepository;
 import com.smyr.showmeyourrecipe.security.UserDetailsImpl;
 import com.smyr.showmeyourrecipe.service.CommentService;
 import lombok.RequiredArgsConstructor;
