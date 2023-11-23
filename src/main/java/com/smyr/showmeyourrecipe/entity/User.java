@@ -16,6 +16,7 @@ public class User {
 	private String email;
 	private String introduce;
 
+
 	@Enumerated( value = EnumType.STRING )
 	private UserRoleEnum role;
 }
