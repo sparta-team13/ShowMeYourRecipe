@@ -1,6 +1,6 @@
-package com.smyr.showmeyourrecipe.dto;
+package com.smyr.showmeyourrecipe.dto.comment;
 
-import com.smyr.showmeyourrecipe.entity.Comment;
+import com.smyr.showmeyourrecipe.entity.comment.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

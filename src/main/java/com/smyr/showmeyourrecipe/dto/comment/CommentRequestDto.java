@@ -1,4 +1,4 @@
-package com.smyr.showmeyourrecipe.dto;
+package com.smyr.showmeyourrecipe.dto.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
