@@ -1,10 +1,8 @@
 package com.smyr.showmeyourrecipe.controller;
 
-import com.smyr.showmeyourrecipe.dto.UserRequestDto;
-import com.smyr.showmeyourrecipe.dto.UserResponseDto;
+import com.smyr.showmeyourrecipe.dto.user.UserRequestDto;
 
 import com.smyr.showmeyourrecipe.etc.response.ApiResponse;
-import com.smyr.showmeyourrecipe.jwt.JwtUtil;
 
 import com.smyr.showmeyourrecipe.security.UserDetailsImpl;
 import com.smyr.showmeyourrecipe.service.UserService;

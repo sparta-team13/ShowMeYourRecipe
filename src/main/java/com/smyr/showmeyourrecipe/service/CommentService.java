@@ -5,6 +5,7 @@ import com.smyr.showmeyourrecipe.dto.CommentResponseDto;
 
 import com.smyr.showmeyourrecipe.entity.*;
 import com.smyr.showmeyourrecipe.entity.post.Post;
+import com.smyr.showmeyourrecipe.entity.user.User;
 import com.smyr.showmeyourrecipe.repository.CommentRepository;
 import com.smyr.showmeyourrecipe.repository.post.PostRepository;
 import com.smyr.showmeyourrecipe.repository.CommentLikeRepository;
@@ -37,7 +38,7 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDto createComment(User user, Long postId, CommentRequestDto requestDto) {
+    public CommentResponseDto createComment( User user, Long postId, CommentRequestDto requestDto) {
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new NullPointerException("해당 게시글을 찾을 수 없습니다.")
         );

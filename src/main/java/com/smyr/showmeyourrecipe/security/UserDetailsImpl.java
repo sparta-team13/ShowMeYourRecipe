@@ -1,7 +1,7 @@
 package com.smyr.showmeyourrecipe.security;
 
-import com.smyr.showmeyourrecipe.entity.User;
-import com.smyr.showmeyourrecipe.entity.UserRoleEnum;
+import com.smyr.showmeyourrecipe.entity.user.User;
+import com.smyr.showmeyourrecipe.entity.user.UserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
