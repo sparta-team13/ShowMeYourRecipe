@@ -1,16 +1,19 @@
 package com.smyr.showmeyourrecipe.service;
 
+import com.smyr.showmeyourrecipe.dto.post.PostQueryResponse;
 import com.smyr.showmeyourrecipe.dto.post.PostRequest;
 import com.smyr.showmeyourrecipe.dto.post.PostResponse;
 import com.smyr.showmeyourrecipe.entity.post.Post;
 import com.smyr.showmeyourrecipe.entity.User;
 import com.smyr.showmeyourrecipe.entity.post.PostLike;
 import com.smyr.showmeyourrecipe.repository.post.PostLikeRepository;
+import com.smyr.showmeyourrecipe.repository.post.PostQueryRepository;
 import com.smyr.showmeyourrecipe.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -18,6 +21,7 @@ import java.util.NoSuchElementException;
 @Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
+    private final PostQueryRepository postQueryRepository;
     private final PostLikeRepository postLikeRepository;
 
     /**
@@ -47,11 +51,14 @@ public class PostService {
     }
 
     public PostResponse readPost(Long userId, Long postId) {
+        List<PostQueryResponse> res = postQueryRepository.readPost(userId, postId);
         return PostResponse.builder()
-                    .postId(postId)
-                    .queryResponse(postLikeRepository.readPost(userId, postId).get(0))
-                    .build();
+                .res(res.get(0))
+                .likeCount(res.size())
+                .build();
     }
+
+
 
     /**
      *  Service for postLike
