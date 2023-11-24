@@ -1,14 +1,11 @@
-package com.smyr.showmeyourrecipe.entity;
+package com.smyr.showmeyourrecipe.entity.post;
 
+import com.smyr.showmeyourrecipe.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
 
