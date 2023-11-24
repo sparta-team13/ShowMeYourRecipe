@@ -1,8 +1,6 @@
 package com.smyr.showmeyourrecipe.controller;
 
 import com.smyr.showmeyourrecipe.dto.post.PostRequest;
-import com.smyr.showmeyourrecipe.dto.post.PostResponse;
-import com.smyr.showmeyourrecipe.entity.post.Post;
 import com.smyr.showmeyourrecipe.etc.response.ApiResponse;
 import com.smyr.showmeyourrecipe.security.UserDetailsImpl;
 import com.smyr.showmeyourrecipe.service.PostService;
