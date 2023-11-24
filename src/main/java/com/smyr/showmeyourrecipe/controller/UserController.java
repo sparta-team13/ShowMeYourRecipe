@@ -21,15 +21,20 @@ public class UserController {
 
 	@PostMapping( "/auth/signup" )
 	public @ResponseBody ResponseEntity< ApiResponse > signup( @RequestBody UserRequestDto userRequestDto ) {
-		this.userService.signup( userRequestDto );
-		this.emailService.sendMail();
+		this.emailService.sendEmailAuth( userRequestDto );
 
-		return ResponseEntity.ok( ApiResponse.ok( "singup success" ) );
+		return ResponseEntity.ok( ApiResponse.ok( userRequestDto.getEmail() + "으로 인증 메일을 발송하였습니다."  ) );
+	}
+
+	@GetMapping( "/auth/signup/email/{id}" )
+	public ResponseEntity< ApiResponse > email_auth( @PathVariable String id ) {
+		this.userService.signupEmailAuth( id );
+
+		return ResponseEntity.ok( ApiResponse.ok( "회원 가입을 축하합니다. 이제부터 로그인 가능합니다." ) );
 	}
 
 	@GetMapping( "/users/{userId}" )
 	public ResponseEntity< ApiResponse > getUser( @PathVariable long userId ) {
-
 		var userResponseDto = this.userService.getUser( userId );
 
 		return ResponseEntity.ok( ApiResponse.ok( userResponseDto ) );
@@ -37,9 +42,7 @@ public class UserController {
 
 	@PatchMapping( "/users" )
 	public ResponseEntity< ApiResponse > updateProfile( @AuthenticationPrincipal UserDetailsImpl userDetailsImpl, UserRequestDto userRequestDto ) {
-
 		var userId = userDetailsImpl.getUser().getId();
-
 		userService.updateUser( userId, userRequestDto );
 
 		return ResponseEntity.ok( ApiResponse.ok( "update success" ) );

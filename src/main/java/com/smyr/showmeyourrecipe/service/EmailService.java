@@ -1,10 +1,14 @@
 package com.smyr.showmeyourrecipe.service;
 
+import com.smyr.showmeyourrecipe.dto.user.UserRequestDto;
+import com.smyr.showmeyourrecipe.entity.user.EmailAuth;
+import com.smyr.showmeyourrecipe.repository.user.EmailAuthRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -18,27 +22,46 @@ import static org.springframework.security.core.context.SecurityContextHolder.se
 public class EmailService {
 
 	private final JavaMailSender javaMailSender;
+	private final EmailAuthRepository emailAuthRepository;
+	private final PasswordEncoder passwordEncoder;
 
-	public void sendMail() {
-		String authNum = "1234";//createCode();
+	public void sendEmailAuth( UserRequestDto userRequestDto ) {
+		String subject = "[ Show Me Your Recipe ] 회원 가입 인증 메일입니다.";
 
+		String id = passwordEncoder.encode( userRequestDto.getUsername()
+				+ userRequestDto.getEmail()
+				+ userRequestDto.getIntroduce()	);
+		String password = passwordEncoder.encode( userRequestDto.getPassword() );
+
+		emailAuthRepository.save( EmailAuth.builder()
+				.id( id )
+				.username( userRequestDto.getUsername() )
+				.password( password )
+				.introduce( userRequestDto.getIntroduce() )
+				.email( userRequestDto.getEmail() ).build()
+		);
+
+		String text = "http://localhost:8080/api/auth/signup/email/" + id;
+
+		sendMail( userRequestDto.getEmail(), subject, text );
+	}
+
+	private void sendMail( String to, String subject, String text ) {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-
-		//if (type.equals("password")) userService.SetTempPassword(emailMessage.getTo(), authNum);
 
 		try {
 			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
-			mimeMessageHelper.setTo( "japgo@naver.com" ); // 메일 수신자
-			mimeMessageHelper.setSubject( "Show Me Your Recipe" ); // 메일 제목
-			mimeMessageHelper.setText( "I'm Still Hungry." , true); // 메일 본문 내용, HTML 여부
+			mimeMessageHelper.setTo( to ); // 메일 수신자
+			mimeMessageHelper.setSubject( subject ); // 메일 제목
+			mimeMessageHelper.setText( text , true); // 메일 본문 내용, HTML 여부
 
 			javaMailSender.send(mimeMessage);
 
 			log.info("Success");
 
-		} catch ( MessagingException e) {
+		} catch ( MessagingException e ) {
 			log.info("fail");
-			throw new RuntimeException(e);
+			throw new RuntimeException( e );
 		}
 	}
 }
