@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Table(name = "comment")
-public class Comment{
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
@@ -50,19 +50,21 @@ public class Comment{
         this.writerName = user.getUsername();
         this.content = requestDto.getContent();
         this.post = post;
+        this.depth = 1L;
         this.lastModifiedDate = LocalDateTime.now();
     }
 
     @Builder(builderClassName = "replyBuilder", builderMethodName = "replyBuilder")
-    public Comment(User user, CommentRequestDto requestDto, Post post,Long parentCommentId) {
+    public Comment(User user, CommentRequestDto requestDto, Post post, Long parentCommentId, Long depth) {
         this.writerId = user.getId();
         this.writerName = user.getUsername();
         this.content = requestDto.getContent();
         this.post = post;
         this.parentCommentId = parentCommentId;
-        this.depth = parentCommentId+1;
+        this.depth = depth + 1;
         this.lastModifiedDate = LocalDateTime.now();
     }
+
     public void update(CommentRequestDto requestDto) {
         this.content = requestDto.getContent();
     }

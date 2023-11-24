@@ -119,6 +119,7 @@ public class CommentService {
                 .requestDto(requestDto)
                 .post(parentComment.getPost())
                 .parentCommentId(parentCommentId)
+                .depth(parentComment.getDepth())
                 .build());
 
         return new CommentResponseDto(comment);
