@@ -1,6 +1,7 @@
 package com.smyr.showmeyourrecipe.controller;
 
 import com.smyr.showmeyourrecipe.dto.post.PostRequest;
+import com.smyr.showmeyourrecipe.security.UserDetailsImpl;
 import com.smyr.showmeyourrecipe.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,7 +15,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("")
-    public void createPost(@AuthenticationPrincipal UserDetails userDetails,
+    public void createPost(@AuthenticationPrincipal UserDetailsImpl userDetails,
                            @RequestBody PostRequest request) {
 //        postService.createPost(userDetails.getUser(), request);
     }
