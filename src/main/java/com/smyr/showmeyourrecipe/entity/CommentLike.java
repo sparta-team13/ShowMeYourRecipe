@@ -1,24 +1,20 @@
 package com.smyr.showmeyourrecipe.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-@Data
-@Entity
+//@Data
 @Getter
+@Entity
 @NoArgsConstructor
-@AllArgsConstructor
-@IdClass(CommentLikeKey.class)
-@Table(name = "commentLike")
 public class CommentLike{
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userid")
-    private User user;
 
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "commentid")
-    private Comment comment;
+    @EmbeddedId
+    private CommentLikeKey id;
+
+    public CommentLike(CommentLikeKey id) {
+        this.id = id;
+    }
 }
