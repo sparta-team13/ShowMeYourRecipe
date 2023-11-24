@@ -1,7 +1,7 @@
 package com.smyr.showmeyourrecipe.dto.post;
 
-import com.smyr.showmeyourrecipe.entity.User;
 import com.smyr.showmeyourrecipe.entity.post.Post;
+import com.smyr.showmeyourrecipe.entity.user.User;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -33,7 +33,6 @@ public class PostResponse {
         this.likeCount = likeCount;
         this.recentLikeUser = user.getUsername();
         this.myLike = res.isMyLike();
-
         this.lastModifiedDate = post.getLastModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 }

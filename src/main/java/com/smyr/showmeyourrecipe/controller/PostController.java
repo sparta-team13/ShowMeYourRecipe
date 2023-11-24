@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/post")
+@RequestMapping("/api/posts")
 public class PostController {
     private final PostService postService;
 
@@ -51,13 +51,13 @@ public class PostController {
     /**
      * Controller for postLike
      * */
-    @PostMapping("/{postId}/like")
+    @PostMapping("/{postId}/likes")
     public void createPostLike(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                @PathVariable("postId") Long postId) {
         postService.createPostLike(userDetailsImpl.getUser(), postId);
     }
 
-    @DeleteMapping("/{postId}/like")
+    @DeleteMapping("/{postId}/likes")
     public void deletePostLike(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                @PathVariable("postId") Long postId) {
         postService.deletePostLike(userDetailsImpl.getUser(), postId);
