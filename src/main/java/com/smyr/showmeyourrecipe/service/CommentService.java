@@ -1,15 +1,15 @@
 package com.smyr.showmeyourrecipe.service;
 
-import com.smyr.showmeyourrecipe.dto.CommentRequestDto;
-import com.smyr.showmeyourrecipe.dto.CommentResponseDto;
-
-import com.smyr.showmeyourrecipe.entity.*;
+import com.smyr.showmeyourrecipe.dto.comment.CommentRequestDto;
+import com.smyr.showmeyourrecipe.dto.comment.CommentResponseDto;
+import com.smyr.showmeyourrecipe.entity.comment.Comment;
+import com.smyr.showmeyourrecipe.entity.comment.CommentLike;
+import com.smyr.showmeyourrecipe.entity.comment.CommentLikeKey;
 import com.smyr.showmeyourrecipe.entity.post.Post;
 import com.smyr.showmeyourrecipe.entity.user.User;
-import com.smyr.showmeyourrecipe.repository.CommentRepository;
+import com.smyr.showmeyourrecipe.repository.comment.CommentLikeRepository;
+import com.smyr.showmeyourrecipe.repository.comment.CommentRepository;
 import com.smyr.showmeyourrecipe.repository.post.PostRepository;
-import com.smyr.showmeyourrecipe.repository.CommentLikeRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,12 +38,12 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDto createComment( User user, Long postId, CommentRequestDto requestDto) {
+    public CommentResponseDto createComment(User user, Long postId, CommentRequestDto requestDto) {
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new NullPointerException("해당 게시글을 찾을 수 없습니다.")
         );
 
-        Comment comment = commentRepository.save(Comment.builder()
+        Comment comment = commentRepository.save(Comment.commentBuilder()
                 .user(user)
                 .requestDto(requestDto)
                 .post(post)
@@ -71,13 +71,16 @@ public class CommentService {
         return new CommentResponseDto(comment);
     }
     @Transactional
-    public CommentLike createCommentLike(Long userId, Long commentId) {
-        return commentLikeRepository.save(new CommentLike(
-                CommentLikeKey.builder()
-                        .userId(userId)
-                        .commentId(commentId)
+    public CommentLike createCommentLike(User user, Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(NoSuchElementException::new);
+
+        return commentLikeRepository.save(
+                CommentLike.builder()
+                        .user(user)
+                        .comment(comment)
                         .build()
-        ));
+        );
     }
 
     @Transactional
@@ -89,5 +92,34 @@ public class CommentService {
                         .build()
         ).orElseThrow(NoSuchElementException::new);
         commentLikeRepository.delete(commentLike);
+    }
+
+    public List<CommentResponseDto> getCommentDetail(Long postId, Long commentId) {
+        List<Comment> commentList = commentRepository.findAllByPost_Id(postId);
+        List<CommentResponseDto> responseDtoList = new ArrayList<>();
+
+        for (Comment comment : commentList) {
+            responseDtoList.add(new CommentResponseDto( comment ));
+        }
+
+        return responseDtoList;
+    }
+    @Transactional
+    public CommentResponseDto createReply(User user, Long postId, Long parentCommentId, CommentRequestDto requestDto) {
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new NullPointerException("해당 게시글을 찾을 수 없습니다.")
+        );
+        Comment parentComment = commentRepository.findById(parentCommentId)
+                .orElseThrow(NoSuchElementException::new);
+
+        Comment comment = commentRepository.save(Comment.replyBuilder()
+                .user(user)
+                .requestDto(requestDto)
+                .post(parentComment.getPost())
+                .parentCommentId(parentCommentId)
+                .depth(parentComment.getDepth())
+                .build());
+
+        return new CommentResponseDto(comment);
     }
 }

@@ -1,6 +1,6 @@
-package com.smyr.showmeyourrecipe.entity;
+package com.smyr.showmeyourrecipe.entity.comment;
 
-import com.smyr.showmeyourrecipe.dto.CommentRequestDto;
+import com.smyr.showmeyourrecipe.dto.comment.CommentRequestDto;
 import com.smyr.showmeyourrecipe.entity.post.Post;
 import com.smyr.showmeyourrecipe.entity.user.User;
 import jakarta.persistence.*;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Table(name = "comment")
-public class Comment{
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
@@ -44,12 +44,24 @@ public class Comment{
     private Post post;
 
 
-    @Builder
-    public Comment( User user, CommentRequestDto requestDto, Post post) {
+    @Builder(builderClassName = "commentBuilder", builderMethodName = "commentBuilder")
+    public Comment(User user, CommentRequestDto requestDto, Post post) {
         this.writerId = user.getId();
         this.writerName = user.getUsername();
         this.content = requestDto.getContent();
         this.post = post;
+        this.depth = 1L;
+        this.lastModifiedDate = LocalDateTime.now();
+    }
+
+    @Builder(builderClassName = "replyBuilder", builderMethodName = "replyBuilder")
+    public Comment(User user, CommentRequestDto requestDto, Post post, Long parentCommentId, Long depth) {
+        this.writerId = user.getId();
+        this.writerName = user.getUsername();
+        this.content = requestDto.getContent();
+        this.post = post;
+        this.parentCommentId = parentCommentId;
+        this.depth = depth + 1;
         this.lastModifiedDate = LocalDateTime.now();
     }
 
