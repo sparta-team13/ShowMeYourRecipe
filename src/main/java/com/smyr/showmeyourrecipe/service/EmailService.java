@@ -31,6 +31,7 @@ public class EmailService {
 		String id = passwordEncoder.encode( userRequestDto.getUsername()
 				+ userRequestDto.getEmail()
 				+ userRequestDto.getIntroduce()	);
+		id = id.replace( "/", "." );
 		String password = passwordEncoder.encode( userRequestDto.getPassword() );
 
 		emailAuthRepository.save( EmailAuth.builder()
@@ -53,7 +54,7 @@ public class EmailService {
 			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
 			mimeMessageHelper.setTo( to ); // 메일 수신자
 			mimeMessageHelper.setSubject( subject ); // 메일 제목
-			mimeMessageHelper.setText( text , true); // 메일 본문 내용, HTML 여부
+			mimeMessageHelper.setText( text , false); // 메일 본문 내용, HTML 여부
 
 			javaMailSender.send(mimeMessage);
 

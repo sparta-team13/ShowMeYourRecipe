@@ -67,5 +67,7 @@ public class UserService {
 		user.setRole( UserRoleEnum.USER );
 
 		this.userRepository.save( user );
+
+		this.emailAuthRepository.deleteById( id );
 	}
 }
