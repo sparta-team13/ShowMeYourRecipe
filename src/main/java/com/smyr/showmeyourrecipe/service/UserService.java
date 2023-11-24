@@ -7,6 +7,7 @@ import com.smyr.showmeyourrecipe.entity.UserRoleEnum;
 import com.smyr.showmeyourrecipe.jwt.JwtUtil;
 import com.smyr.showmeyourrecipe.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,19 +38,18 @@ public class UserService {
 		return userResponseDto;
 	}
 
+	@Transactional
 	public void updateUser( long userId, UserRequestDto userRequestDto ) {
-		User user = userRepository.findById( userId )
+		User user = userRepository.findById(userId)
 				.orElseThrow( ()-> new NoSuchElementException( "user id : " + userId + " not exist." ) );
 
-		user.setId( userId );
 		user.setUsername( userRequestDto.getUsername() );
 		user.setIntroduce( userRequestDto.getIntroduce() );
 		user.setEmail( userRequestDto.getEmail() );
 		user.setPassword( passwordEncoder.encode( userRequestDto.getPassword() ) );
-
-		userRepository.save( user );
 	}
 
+	@Transactional
 	public void signup( UserRequestDto userRequestDto ) {
 		String username = userRequestDto.getUsername();;
 		var findUser = userRepository.findByUsername( username );
