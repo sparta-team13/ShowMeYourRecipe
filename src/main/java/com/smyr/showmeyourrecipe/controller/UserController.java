@@ -5,6 +5,7 @@ import com.smyr.showmeyourrecipe.dto.user.UserRequestDto;
 import com.smyr.showmeyourrecipe.etc.response.ApiResponse;
 
 import com.smyr.showmeyourrecipe.security.UserDetailsImpl;
+import com.smyr.showmeyourrecipe.service.EmailService;
 import com.smyr.showmeyourrecipe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping( "/api" )
 public class UserController {
 	private final UserService userService;
+	private final EmailService emailService;
 
 	@PostMapping( "/auth/signup" )
 	public @ResponseBody ResponseEntity< ApiResponse > signup( @RequestBody UserRequestDto userRequestDto ) {
 		this.userService.signup( userRequestDto );
+		this.emailService.sendMail();
 
 		return ResponseEntity.ok( ApiResponse.ok( "singup success" ) );
 	}
