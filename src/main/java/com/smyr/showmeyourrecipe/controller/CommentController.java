@@ -1,8 +1,8 @@
 package com.smyr.showmeyourrecipe.controller;
 
 
-import com.smyr.showmeyourrecipe.dto.CommentRequestDto;
-import com.smyr.showmeyourrecipe.dto.CommentResponseDto;
+import com.smyr.showmeyourrecipe.dto.comment.CommentRequestDto;
+import com.smyr.showmeyourrecipe.dto.comment.CommentResponseDto;
 import com.smyr.showmeyourrecipe.security.UserDetailsImpl;
 import com.smyr.showmeyourrecipe.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -18,33 +18,58 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/{postId}/comments")
-    public List<CommentResponseDto> getComment(@PathVariable Long postId) {
+    public List<CommentResponseDto> getComment(@PathVariable ("postId") Long postId) {
         return commentService.getComment(postId);
     }
 
+    @GetMapping("/{postId}/comments/{commentId}")
+    public List<CommentResponseDto> getCommentDetail(@PathVariable ("postId") Long postId,
+                                                     @PathVariable ("commentId") Long commentId) {
+        return commentService.getCommentDetail(postId,commentId);
+    }
+
     @PostMapping("/{postId}/comments")
-    public CommentResponseDto createComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId, @RequestBody CommentRequestDto requestDto) {
+    public CommentResponseDto createComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                            @PathVariable ("postId") Long postId,
+                                            @RequestBody CommentRequestDto requestDto) {
         return commentService.createComment(userDetails.getUser(), postId, requestDto);
     }
 
+    // 대댓글
+    @PostMapping("/{postId}/{parentCommentId}/comments")
+    public CommentResponseDto createReply(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                          @PathVariable ("postId") Long postId,
+                                          @PathVariable ("parentCommentId") Long parentCommentId,
+                                          @RequestBody CommentRequestDto requestDto) {
+        return commentService.createReply(userDetails.getUser(), postId, parentCommentId,requestDto);
+    }
+
     @PatchMapping("/{postId}/comments/{commentId}")
-    public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto) {
+    public CommentResponseDto updateComment(@PathVariable ("postId") Long postId,
+                                            @PathVariable ("commentId") Long commentId,
+                                            @RequestBody CommentRequestDto requestDto) {
         return commentService.updateComment(commentId, requestDto);
     }
 
     @DeleteMapping("/{postId}/comments/{commentId}")
-    public CommentResponseDto deleteComment(@PathVariable Long commentId) {
+    public CommentResponseDto deleteComment(@PathVariable ("postId") Long postId,
+                                            @PathVariable ("commentId")Long commentId) {
         return commentService.deleteComment(commentId);
     }
 
     @PostMapping("/{postId}/comments/{commentId}/likes")
-    public void likeComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId, @PathVariable Long postId) {
-        commentService.createCommentLike(userDetails.getUser().getId(), commentId);
+    public void likeComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                            @PathVariable ("postId") Long postId,
+                            @PathVariable ("commentId") Long commentId) {
+        commentService.createCommentLike(userDetails.getUser(), commentId);
     }
 
     @DeleteMapping("/{postId}/comments/{commentId}/likes")
-    public void deleteLikeComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId, @PathVariable Long postId) {
+    public void deleteLikeComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                  @PathVariable ("postId") Long postId,
+                                  @PathVariable ("commentId") Long commentId) {
         commentService.deleteCommentLike(userDetails.getUser().getId(), commentId);
     }
+
 
 }

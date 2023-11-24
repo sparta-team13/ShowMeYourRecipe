@@ -1,4 +1,4 @@
-package com.smyr.showmeyourrecipe.entity;
+package com.smyr.showmeyourrecipe.entity.comment;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
