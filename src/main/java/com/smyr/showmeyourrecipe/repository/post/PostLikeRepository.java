@@ -1,6 +1,6 @@
 package com.smyr.showmeyourrecipe.repository.post;
 
-import com.smyr.showmeyourrecipe.entity.User;
+import com.smyr.showmeyourrecipe.entity.user.User;
 import com.smyr.showmeyourrecipe.entity.post.Post;
 import com.smyr.showmeyourrecipe.entity.post.PostLike;
 import com.smyr.showmeyourrecipe.entity.post.PostLikePK;
