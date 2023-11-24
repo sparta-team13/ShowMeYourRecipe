@@ -1,6 +1,6 @@
 package com.smyr.showmeyourrecipe.jwt;
 
-import com.smyr.showmeyourrecipe.entity.UserRoleEnum;
+import com.smyr.showmeyourrecipe.entity.user.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;

@@ -2,8 +2,8 @@ package com.smyr.showmeyourrecipe.jwt;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smyr.showmeyourrecipe.dto.UserRequestDto;
-import com.smyr.showmeyourrecipe.entity.UserRoleEnum;
+import com.smyr.showmeyourrecipe.dto.user.UserRequestDto;
+import com.smyr.showmeyourrecipe.entity.user.UserRoleEnum;
 import com.smyr.showmeyourrecipe.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

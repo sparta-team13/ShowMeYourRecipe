@@ -2,16 +2,14 @@ package com.smyr.showmeyourrecipe.service;
 
 import com.smyr.showmeyourrecipe.dto.comment.CommentRequestDto;
 import com.smyr.showmeyourrecipe.dto.comment.CommentResponseDto;
-
-import com.smyr.showmeyourrecipe.entity.*;
 import com.smyr.showmeyourrecipe.entity.comment.Comment;
 import com.smyr.showmeyourrecipe.entity.comment.CommentLike;
 import com.smyr.showmeyourrecipe.entity.comment.CommentLikeKey;
 import com.smyr.showmeyourrecipe.entity.post.Post;
+import com.smyr.showmeyourrecipe.entity.user.User;
+import com.smyr.showmeyourrecipe.repository.comment.CommentLikeRepository;
 import com.smyr.showmeyourrecipe.repository.comment.CommentRepository;
 import com.smyr.showmeyourrecipe.repository.post.PostRepository;
-import com.smyr.showmeyourrecipe.repository.comment.CommentLikeRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

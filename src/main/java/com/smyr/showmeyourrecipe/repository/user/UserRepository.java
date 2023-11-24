@@ -1,6 +1,6 @@
-package com.smyr.showmeyourrecipe.repository;
+package com.smyr.showmeyourrecipe.repository.user;
 
-import com.smyr.showmeyourrecipe.entity.User;
+import com.smyr.showmeyourrecipe.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

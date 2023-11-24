@@ -1,8 +1,8 @@
 package com.smyr.showmeyourrecipe.entity.comment;
 
 import com.smyr.showmeyourrecipe.dto.comment.CommentRequestDto;
-import com.smyr.showmeyourrecipe.entity.User;
 import com.smyr.showmeyourrecipe.entity.post.Post;
+import com.smyr.showmeyourrecipe.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

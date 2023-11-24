@@ -2,15 +2,20 @@ package com.smyr.showmeyourrecipe.controller;
 
 import com.smyr.showmeyourrecipe.dto.post.PostRequest;
 import com.smyr.showmeyourrecipe.dto.post.PostResponse;
+import com.smyr.showmeyourrecipe.entity.post.Post;
+import com.smyr.showmeyourrecipe.etc.response.ApiResponse;
 import com.smyr.showmeyourrecipe.security.UserDetailsImpl;
 import com.smyr.showmeyourrecipe.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/post")
+@RequestMapping("/api/posts")
 public class PostController {
     private final PostService postService;
 
@@ -36,21 +41,23 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public PostResponse readPost(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-                                 @PathVariable("postId") Long postId) {
-        return postService.readPost(userDetailsImpl.getUser().getId(), postId);
+    public ResponseEntity<ApiResponse> readPost(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+                               @PathVariable("postId") Long postId) {
+        return ResponseEntity.ok(ApiResponse.ok(
+                postService.readPost(userDetailsImpl.getUser().getId(), postId)
+        ));
     }
 
     /**
      * Controller for postLike
      * */
-    @PostMapping("/{postId}/like")
+    @PostMapping("/{postId}/likes")
     public void createPostLike(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                @PathVariable("postId") Long postId) {
         postService.createPostLike(userDetailsImpl.getUser(), postId);
     }
 
-    @DeleteMapping("/{postId}/like")
+    @DeleteMapping("/{postId}/likes")
     public void deletePostLike(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                @PathVariable("postId") Long postId) {
         postService.deletePostLike(userDetailsImpl.getUser(), postId);

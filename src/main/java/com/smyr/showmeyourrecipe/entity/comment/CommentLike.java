@@ -1,8 +1,7 @@
 package com.smyr.showmeyourrecipe.entity.comment;
 
-import com.smyr.showmeyourrecipe.entity.User;
-import com.smyr.showmeyourrecipe.entity.post.Post;
-import com.smyr.showmeyourrecipe.entity.post.PostLikePK;
+
+import com.smyr.showmeyourrecipe.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

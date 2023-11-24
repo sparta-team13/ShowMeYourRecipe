@@ -35,7 +35,6 @@ public class CommentController {
         return commentService.createComment(userDetails.getUser(), postId, requestDto);
     }
 
-    // 대댓글
     @PostMapping("/{postId}/{parentCommentId}/comments")
     public CommentResponseDto createReply(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                           @PathVariable ("postId") Long postId,
