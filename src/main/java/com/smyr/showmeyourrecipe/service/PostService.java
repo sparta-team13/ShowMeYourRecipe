@@ -4,7 +4,7 @@ import com.smyr.showmeyourrecipe.dto.post.PostQueryResponse;
 import com.smyr.showmeyourrecipe.dto.post.PostRequest;
 import com.smyr.showmeyourrecipe.dto.post.PostResponse;
 import com.smyr.showmeyourrecipe.entity.post.Post;
-import com.smyr.showmeyourrecipe.entity.User;
+import com.smyr.showmeyourrecipe.entity.user.User;
 import com.smyr.showmeyourrecipe.entity.post.PostLike;
 import com.smyr.showmeyourrecipe.repository.post.PostLikeRepository;
 import com.smyr.showmeyourrecipe.repository.post.PostQueryRepository;

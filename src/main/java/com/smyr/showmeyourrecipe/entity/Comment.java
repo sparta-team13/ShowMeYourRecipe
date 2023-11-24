@@ -2,6 +2,7 @@ package com.smyr.showmeyourrecipe.entity;
 
 import com.smyr.showmeyourrecipe.dto.CommentRequestDto;
 import com.smyr.showmeyourrecipe.entity.post.Post;
+import com.smyr.showmeyourrecipe.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -44,7 +45,7 @@ public class Comment{
 
 
     @Builder
-    public Comment(User user, CommentRequestDto requestDto, Post post) {
+    public Comment( User user, CommentRequestDto requestDto, Post post) {
         this.writerId = user.getId();
         this.writerName = user.getUsername();
         this.content = requestDto.getContent();

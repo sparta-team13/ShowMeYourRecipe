@@ -1,13 +1,12 @@
 package com.smyr.showmeyourrecipe.security;
 
-import com.smyr.showmeyourrecipe.entity.User;
-import com.smyr.showmeyourrecipe.repository.UserRepository;
+import com.smyr.showmeyourrecipe.entity.user.User;
+import com.smyr.showmeyourrecipe.repository.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service

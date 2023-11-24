@@ -1,7 +1,7 @@
 package com.smyr.showmeyourrecipe.repository.post;
 
 import com.smyr.showmeyourrecipe.entity.post.Post;
-import com.smyr.showmeyourrecipe.entity.User;
+import com.smyr.showmeyourrecipe.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

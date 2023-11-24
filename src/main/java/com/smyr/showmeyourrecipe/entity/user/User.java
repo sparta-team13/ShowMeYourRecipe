@@ -1,4 +1,4 @@
-package com.smyr.showmeyourrecipe.entity;
+package com.smyr.showmeyourrecipe.entity.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;

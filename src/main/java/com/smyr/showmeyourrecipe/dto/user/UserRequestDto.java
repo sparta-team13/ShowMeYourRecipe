@@ -1,6 +1,5 @@
-package com.smyr.showmeyourrecipe.dto;
+package com.smyr.showmeyourrecipe.dto.user;
 
-import com.smyr.showmeyourrecipe.entity.UserRoleEnum;
 import lombok.Getter;
 import lombok.Setter;
 
