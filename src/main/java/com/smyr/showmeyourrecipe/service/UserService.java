@@ -40,7 +40,7 @@ public class UserService {
 
 	@Transactional
 	public void updateUser( long userId, UserRequestDto userRequestDto ) {
-		User user = userRepository.findById( userId )
+		User user = userRepository.findById(userId)
 				.orElseThrow( ()-> new NoSuchElementException( "user id : " + userId + " not exist." ) );
 
 		user.setUsername( userRequestDto.getUsername() );
