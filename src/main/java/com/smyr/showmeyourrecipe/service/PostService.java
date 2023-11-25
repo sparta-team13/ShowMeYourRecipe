@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -56,6 +57,37 @@ public class PostService {
                 .res(res.get(0))
                 .likeCount(res.size())
                 .build();
+    }
+
+    public List<PostResponse> readPostAll(Long userId) {
+        //1 + N 문제 해결 필요
+        List<Post> posts = postRepository.findAll();
+        List<PostResponse> response = new ArrayList<>();
+        for (Post post : posts) {
+            List<PostQueryResponse> res = postQueryRepository.readPost(userId, post.getId());
+            response.add(PostResponse.builder()
+                    .res(res.get(0))
+                    .likeCount(res.size())
+                    .build()
+            );
+        }
+
+        return response;
+    }
+
+    public List<PostResponse> readPostAllByUser(Long userId, Long targetUserId) {
+        List<Post> posts = postRepository.findAllByUser_Id(targetUserId);
+        List<PostResponse> response = new ArrayList<>();
+        for (Post post : posts) {
+            List<PostQueryResponse> res = postQueryRepository.readPost(userId, post.getId());
+            response.add(PostResponse.builder()
+                    .res(res.get(0))
+                    .likeCount(res.size())
+                    .build()
+            );
+        }
+
+        return response;
     }
 
 
