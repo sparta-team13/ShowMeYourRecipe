@@ -39,6 +39,15 @@ public class Comment {
     @Column(nullable = true)
     private Long depth;
 
+    @Column(nullable = true)
+    private int likeCount;
+
+    @Column(nullable = true)
+    private String recentLikeUser;
+
+    @Column(nullable = true)
+    private Boolean myLike;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
@@ -52,6 +61,9 @@ public class Comment {
         this.post = post;
         this.depth = 1L;
         this.lastModifiedDate = LocalDateTime.now();
+        this.likeCount = 0;
+        this.recentLikeUser = null;
+        this.myLike = false;
     }
 
     @Builder(builderClassName = "replyBuilder", builderMethodName = "replyBuilder")
