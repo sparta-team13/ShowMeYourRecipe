@@ -65,11 +65,13 @@ public class Comment {
         this.lastModifiedDate = LocalDateTime.now();
     }
 
-    public void update(CommentRequestDto requestDto) {
+    public Comment update(CommentRequestDto requestDto) {
         this.content = requestDto.getContent();
+        return this;
     }
 
-    public void delete() {
+    public Comment delete() {
         this.content = "삭제된 댓글입니다.";
+        return this;
     }
 }
