@@ -1,30 +1,28 @@
 package com.smyr.showmeyourrecipe.dto.comment;
 
-import com.smyr.showmeyourrecipe.dto.post.PostQueryResponse;
 import com.smyr.showmeyourrecipe.entity.comment.Comment;
-import com.smyr.showmeyourrecipe.entity.post.Post;
 import com.smyr.showmeyourrecipe.entity.user.User;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
 public class CommentResponseDto {
-    private final Long commentId;
-    private final Long parentCommentId;
-    private final String content;
-    private final Long postId;
-    private final Long depth;
-    private final Long writerId;
-    private final String writer;
-    private final int likeCount;
-    private final String recentLikeUser;
-    private final boolean myLike;
-    private final LocalDateTime lastModifiedDate;
+    private Long commentId;
+    private  Long parentCommentId;
+    private  String content;
+    private  Long postId;
+    private  Long depth;
+    private  Long writerId;
+    private  String writer;
+    private  int likeCount;
+    private  String recentLikeUser;
+    private  boolean myLike;
+    private  LocalDateTime lastModifiedDate;
 
-    @Builder
+
+    @Builder(builderClassName = "commentResponseDtoBuilder", builderMethodName = "commentResponseDtoBuilder")
     public CommentResponseDto(CommentQueryResponse res, int likeCount) {
         Comment comment = res.getCommentLike().getComment();
         User user = res.getCommentLike().getUser();
@@ -40,6 +38,21 @@ public class CommentResponseDto {
         this.likeCount = likeCount;
         this.recentLikeUser = user.getUsername();
         this.myLike = res.isMyLike();
+        this.lastModifiedDate = comment.getLastModifiedDate();
+    }
+
+    @Builder(builderClassName = "commentNoResponseDtoBuilder", builderMethodName = "commentNoResponseDtoBuilder")
+    public CommentResponseDto(Comment comment) {
+        this.commentId = comment.getCommentId();
+        this.content = comment.getContent();
+        this.parentCommentId = comment.getParentCommentId();
+        this.postId = comment.getPost().getId();
+        this.depth = comment.getDepth();
+        this.writerId = comment.getWriterId();
+        this.writer = comment.getWriterName();
+        this.likeCount = 0;
+        this.recentLikeUser = null;
+        this.myLike = false;
         this.lastModifiedDate = comment.getLastModifiedDate();
     }
 }
