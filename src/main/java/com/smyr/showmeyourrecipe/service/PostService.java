@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,11 +53,19 @@ public class PostService {
     }
 
     public PostResponse readPost(Long userId, Long postId) {
-        List<PostQueryResponse> res = postQueryRepository.readPost(userId, postId);
-        return PostResponse.builder()
-                .res(res.get(0))
-                .likeCount(res.size())
-                .build();
+//        List<PostQueryResponse> res = postQueryRepository.readPost(userId, postId);
+//        return PostResponse.builder()
+//                .res(res.get(0))
+//                .likeCount(res.size())
+//                .build();
+
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(NoSuchElementException::new);
+        List<PostLike> findPostLike = postLikeRepository.findByPost_IdOrderByCreatedAtDesc(postId);
+        boolean myLike =
+                postLikeRepository.findByPost_IdAndUser_Id(postId, userId).size() != 0;
+
+        return new PostResponse(findPost, findPostLike, myLike);
     }
 
     public List<PostResponse> readPostAll(Long userId) {
@@ -65,11 +74,7 @@ public class PostService {
         List<PostResponse> response = new ArrayList<>();
         for (Post post : posts) {
             List<PostQueryResponse> res = postQueryRepository.readPost(userId, post.getId());
-            response.add(PostResponse.builder()
-                    .res(res.get(0))
-                    .likeCount(res.size())
-                    .build()
-            );
+            response.add(new PostResponse(res.get(0), res.size()));
         }
 
         return response;
@@ -80,11 +85,7 @@ public class PostService {
         List<PostResponse> response = new ArrayList<>();
         for (Post post : posts) {
             List<PostQueryResponse> res = postQueryRepository.readPost(userId, post.getId());
-            response.add(PostResponse.builder()
-                    .res(res.get(0))
-                    .likeCount(res.size())
-                    .build()
-            );
+            response.add(new PostResponse(res.get(0), res.size()));
         }
 
         return response;
