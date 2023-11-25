@@ -32,7 +32,7 @@ public class CommentController {
                                                         @PathVariable("postId") Long postId,
                                                         @PathVariable("commentId") Long commentId) {
         return ResponseEntity.ok(ApiResponse.ok(
-                commentService.getCommentDetail(userDetails.getUser().getId(), commentId)
+                commentService.getCommentDetail(userDetails.getUser().getId(),postId,commentId)
         ));
     }
 

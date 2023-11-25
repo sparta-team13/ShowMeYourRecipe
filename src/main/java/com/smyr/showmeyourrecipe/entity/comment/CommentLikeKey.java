@@ -14,10 +14,10 @@ import java.io.Serializable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentLikeKey implements Serializable {
 
-    @Column(name = "user_id")
+    @Column(name = "user_id",nullable = true)
     private Long userId;
 
-    @Column(name = "comment_id")
+    @Column(name = "comment_id",nullable = true)
     private Long commentId;
 
     @Builder

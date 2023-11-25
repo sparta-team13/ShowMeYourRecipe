@@ -30,29 +30,55 @@ public class CommentService {
 
     public List<CommentResponseDto> getComment(Long userId, Long postId) {
         List<Comment> comments = commentRepository.findAllByPost_Id(postId);
+        List<CommentLike> commentLikes = commentLikeRepository.findAll();
         List<CommentResponseDto> response = new ArrayList<>();
-        for (Comment comment : comments) {
-            List<CommentQueryResponse> res = commentQueryRepository.getCommentDetail(userId, comment.getCommentId());
-            response.add(CommentResponseDto.builder()
-                    .res(res.get(0))
-                    .likeCount(res.size())
-                    .build());
+        if (commentLikes.isEmpty()) {
+            for (Comment comment : comments) {
+                response.add(
+                        CommentResponseDto.commentNoResponseDtoBuilder()
+                                .comment(comment)
+                                .build());
+            }
+        } else {
+            for (Comment comment : comments) {
+                List<CommentQueryResponse> res = commentQueryRepository.getCommentDetail(userId, comment.getCommentId());
+                if (res.get(0) == null) {
+
+                } else {
+                    response.add(
+                            CommentResponseDto.commentResponseDtoBuilder()
+                                    .res(res.get(0))
+                                    .likeCount(res.size())
+                                    .build());
+                }
+            }
         }
         return response;
     }
 
-    public List<CommentResponseDto> getCommentDetail(Long userId, Long postId) {
-        List<Comment> comments = commentRepository.findAllByPost_Id(postId);
-        List<CommentResponseDto> response = new ArrayList<>();
-        for (Comment comment : comments) {
-            List<CommentQueryResponse> res = commentQueryRepository.getCommentDetail(userId, comment.getCommentId());
-            response.add(
-                    CommentResponseDto.builder()
+    public CommentResponseDto getCommentDetail(Long userId, Long postId, Long commentId) {
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new NullPointerException("해당 게시글을 찾을 수 없습니다.")
+        );
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
+                new NullPointerException("해당 댓글을 찾을 수 없습니다.")
+        );
+
+        List<CommentQueryResponse> res = commentQueryRepository.getCommentDetail(userId, postId);
+
+        List<CommentLike> commentLikes = commentLikeRepository.findAll();
+        if (commentLikes.isEmpty()) {
+            return CommentResponseDto.commentNoResponseDtoBuilder()
+                    .comment(comment)
+                    .build();
+        }
+        else{
+            return CommentResponseDto.commentResponseDtoBuilder()
                     .res(res.get(0))
                     .likeCount(res.size())
-                    .build());
+                    .build();
         }
-        return response;
     }
 
     @Transactional
