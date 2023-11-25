@@ -9,17 +9,17 @@ import java.time.LocalDateTime;
 
 @Getter
 public class CommentResponseDto {
-    private Long commentId;
-    private  Long parentCommentId;
-    private  String content;
-    private  Long postId;
-    private  Long depth;
-    private  Long writerId;
-    private  String writer;
-    private  int likeCount;
-    private  String recentLikeUser;
-    private  boolean myLike;
-    private  LocalDateTime lastModifiedDate;
+    private final Long commentId;
+    private final Long parentCommentId;
+    private final String content;
+    private final Long postId;
+    private final Long depth;
+    private final Long writerId;
+    private final String writer;
+    private final int likeCount;
+    private final String recentLikeUser;
+    private final Boolean myLike;
+    private final LocalDateTime lastModifiedDate;
 
 
     @Builder(builderClassName = "commentResponseDtoBuilder", builderMethodName = "commentResponseDtoBuilder")
@@ -50,9 +50,9 @@ public class CommentResponseDto {
         this.depth = comment.getDepth();
         this.writerId = comment.getWriterId();
         this.writer = comment.getWriterName();
-        this.likeCount = 0;
-        this.recentLikeUser = null;
-        this.myLike = false;
+        this.likeCount = comment.getLikeCount();
+        this.recentLikeUser = comment.getRecentLikeUser();
+        this.myLike = comment.getMyLike();
         this.lastModifiedDate = comment.getLastModifiedDate();
     }
 }
