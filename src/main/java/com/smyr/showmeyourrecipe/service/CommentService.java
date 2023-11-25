@@ -1,5 +1,6 @@
 package com.smyr.showmeyourrecipe.service;
 
+import com.smyr.showmeyourrecipe.dto.comment.CommentQueryResponse;
 import com.smyr.showmeyourrecipe.dto.comment.CommentRequestDto;
 import com.smyr.showmeyourrecipe.dto.comment.CommentResponseDto;
 import com.smyr.showmeyourrecipe.entity.comment.Comment;
@@ -8,6 +9,7 @@ import com.smyr.showmeyourrecipe.entity.comment.CommentLikeKey;
 import com.smyr.showmeyourrecipe.entity.post.Post;
 import com.smyr.showmeyourrecipe.entity.user.User;
 import com.smyr.showmeyourrecipe.repository.comment.CommentLikeRepository;
+import com.smyr.showmeyourrecipe.repository.comment.CommentQueryRepository;
 import com.smyr.showmeyourrecipe.repository.comment.CommentRepository;
 import com.smyr.showmeyourrecipe.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,52 +26,82 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final CommentLikeRepository commentLikeRepository;
+    private final CommentQueryRepository commentQueryRepository;
 
-
-    public List<CommentResponseDto> getComment(Long postId) {
-        List<Comment> commentList = commentRepository.findAllByPost_Id(postId);
-        List<CommentResponseDto> responseDtoList = new ArrayList<>();
-
-        for (Comment comment : commentList) {
-            responseDtoList.add(new CommentResponseDto( comment ));
+    public List<CommentResponseDto> getComment(Long userId, Long postId) {
+        List<Comment> comments = commentRepository.findAllByPost_Id(postId);
+        List<CommentResponseDto> response = new ArrayList<>();
+        for (Comment comment : comments) {
+            List<CommentQueryResponse> res = commentQueryRepository.getCommentDetail(userId, comment.getCommentId());
+            response.add(CommentResponseDto.builder()
+                    .res(res.get(0))
+                    .likeCount(res.size())
+                    .build());
         }
+        return response;
+    }
 
-        return responseDtoList;
+    public List<CommentResponseDto> getCommentDetail(Long userId, Long postId) {
+        List<Comment> comments = commentRepository.findAllByPost_Id(postId);
+        List<CommentResponseDto> response = new ArrayList<>();
+        for (Comment comment : comments) {
+            List<CommentQueryResponse> res = commentQueryRepository.getCommentDetail(userId, comment.getCommentId());
+            response.add(
+                    CommentResponseDto.builder()
+                    .res(res.get(0))
+                    .likeCount(res.size())
+                    .build());
+        }
+        return response;
     }
 
     @Transactional
-    public CommentResponseDto createComment(User user, Long postId, CommentRequestDto requestDto) {
+    public Comment createComment(User user, Long postId, CommentRequestDto requestDto) {
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new NullPointerException("해당 게시글을 찾을 수 없습니다.")
         );
 
-        Comment comment = commentRepository.save(Comment.commentBuilder()
+        return commentRepository.save(Comment.commentBuilder()
                 .user(user)
                 .requestDto(requestDto)
                 .post(post)
                 .build());
-        return new CommentResponseDto(comment);
     }
 
     @Transactional
-    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto) {
+    public Comment createReply(User user, Long postId, Long parentCommentId, CommentRequestDto requestDto) {
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new NullPointerException("해당 게시글을 찾을 수 없습니다.")
+        );
+        Comment parentComment = commentRepository.findById(parentCommentId)
+                .orElseThrow(NoSuchElementException::new);
+
+        return commentRepository.save(Comment.replyBuilder()
+                .user(user)
+                .requestDto(requestDto)
+                .post(parentComment.getPost())
+                .parentCommentId(parentCommentId)
+                .depth(parentComment.getDepth())
+                .build());
+    }
+
+    @Transactional
+    public Comment updateComment(Long commentId, CommentRequestDto requestDto) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
                 new NullPointerException("해당 댓글을 찾을 수 없습니다.")
         );
 
-        comment.update(requestDto);
-        return new CommentResponseDto(comment);
+        return comment.update(requestDto);
     }
 
     @Transactional
-    public CommentResponseDto deleteComment(Long commentId) {
+    public Comment deleteComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
                 new NullPointerException("해당 댓글을 찾을 수 없습니다.")
         );
-
-        comment.delete();
-        return new CommentResponseDto(comment);
+        return comment.delete();
     }
+
     @Transactional
     public CommentLike createCommentLike(User user, Long commentId) {
         Comment comment = commentRepository.findById(commentId)
@@ -94,32 +126,5 @@ public class CommentService {
         commentLikeRepository.delete(commentLike);
     }
 
-    public List<CommentResponseDto> getCommentDetail(Long postId, Long commentId) {
-        List<Comment> commentList = commentRepository.findAllByPost_Id(postId);
-        List<CommentResponseDto> responseDtoList = new ArrayList<>();
 
-        for (Comment comment : commentList) {
-            responseDtoList.add(new CommentResponseDto( comment ));
-        }
-
-        return responseDtoList;
-    }
-    @Transactional
-    public CommentResponseDto createReply(User user, Long postId, Long parentCommentId, CommentRequestDto requestDto) {
-        Post post = postRepository.findById(postId).orElseThrow(() ->
-                new NullPointerException("해당 게시글을 찾을 수 없습니다.")
-        );
-        Comment parentComment = commentRepository.findById(parentCommentId)
-                .orElseThrow(NoSuchElementException::new);
-
-        Comment comment = commentRepository.save(Comment.replyBuilder()
-                .user(user)
-                .requestDto(requestDto)
-                .post(parentComment.getPost())
-                .parentCommentId(parentCommentId)
-                .depth(parentComment.getDepth())
-                .build());
-
-        return new CommentResponseDto(comment);
-    }
 }
