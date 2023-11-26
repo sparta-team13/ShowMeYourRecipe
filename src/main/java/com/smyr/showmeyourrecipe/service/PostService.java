@@ -72,9 +72,15 @@ public class PostService {
         //1 + N 문제 해결 필요
         List<Post> posts = postRepository.findAll();
         List<PostResponse> response = new ArrayList<>();
+//        for (Post post : posts) {
+//            List<PostQueryResponse> res = postQueryRepository.readPost(userId, post.getId());
+//            response.add(new PostResponse(res.get(0), res.size()));
+//        }
+
         for (Post post : posts) {
-            List<PostQueryResponse> res = postQueryRepository.readPost(userId, post.getId());
-            response.add(new PostResponse(res.get(0), res.size()));
+            List<PostLike> findPostLike = postLikeRepository.findByPost_IdOrderByCreatedAtDesc(post.getId());
+            boolean myLike = postLikeRepository.findByPost_IdAndUser_Id(post.getId(), userId).size() != 0;
+            response.add(new PostResponse(post, findPostLike, myLike));
         }
 
         return response;
@@ -83,9 +89,15 @@ public class PostService {
     public List<PostResponse> readPostAllByUser(Long userId, Long targetUserId) {
         List<Post> posts = postRepository.findAllByUser_Id(targetUserId);
         List<PostResponse> response = new ArrayList<>();
+//        for (Post post : posts) {
+//            List<PostQueryResponse> res = postQueryRepository.readPost(userId, post.getId());
+//            response.add(new PostResponse(res.get(0), res.size()));
+//        }
+
         for (Post post : posts) {
-            List<PostQueryResponse> res = postQueryRepository.readPost(userId, post.getId());
-            response.add(new PostResponse(res.get(0), res.size()));
+            List<PostLike> findPostLike = postLikeRepository.findByPost_IdOrderByCreatedAtDesc(post.getId());
+            boolean myLike = postLikeRepository.findByPost_IdAndUser_Id(post.getId(), userId).size() != 0;
+            response.add(new PostResponse(post, findPostLike, myLike));
         }
 
         return response;
