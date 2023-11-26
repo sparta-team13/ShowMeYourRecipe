@@ -42,8 +42,11 @@ public class CommentService {
         } else {
             for (Comment comment : comments) {
                 List<CommentQueryResponse> res = commentQueryRepository.getCommentDetail(userId, comment.getCommentId());
-                if (res.get(0) == null) {
-
+                if (res.isEmpty()) {
+                    response.add(
+                            CommentResponseDto.commentNoResponseDtoBuilder()
+                                    .comment(comment)
+                                    .build());
                 } else {
                     response.add(
                             CommentResponseDto.commentResponseDtoBuilder()
